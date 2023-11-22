@@ -26,3 +26,9 @@ type ElevatorState = {
     runningDirection: Direction | null
     nextCommand: CommandAction
 }
+
+type MovementState = {
+    direction: Direction | null
+    isReadyToMove: boolean
+    nextCommand: CommandAction
+}

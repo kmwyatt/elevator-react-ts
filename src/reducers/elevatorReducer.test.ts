@@ -94,18 +94,19 @@ describe('Elevator', () => {
         const { result }: ElevatorReducerTest = renderHook(() =>
             elevatorReducer(1, 5)
         )
-
-        result.current.dispatch({
-            type: 'ELEVATOR_CALLED',
-            payload: { direction: 'DOWN', floor: 5 },
-        })
-        result.current.dispatch({
-            type: 'FLOOR_SELECTED',
-            payload: { floor: 2 },
-        })
-        result.current.dispatch({
-            type: 'ELEVATOR_CALLED',
-            payload: { direction: 'UP', floor: 3 },
+        act(() => {
+            result.current.dispatch({
+                type: 'ELEVATOR_CALLED',
+                payload: { direction: 'DOWN', floor: 5 },
+            })
+            result.current.dispatch({
+                type: 'FLOOR_SELECTED',
+                payload: { floor: 2 },
+            })
+            result.current.dispatch({
+                type: 'ELEVATOR_CALLED',
+                payload: { direction: 'UP', floor: 3 },
+            })
         })
 
         act(() => {

@@ -1,21 +1,25 @@
 /// <reference types="react-scripts" />
-type Event = ELEVATOR_CALLED | FLOOR_SELECTED | ELEVATOR_ARRIVED_ON
+type AppEvent =
+    | ELEVATOR_CALLED
+    | FLOOR_SELECTED
+    | ELEVATOR_ARRIVED_ON
+    | DOOR_CLOSED
 
-type Command = MOVE | STOP | NOOP | READY_TO_MOVE | OPEN_DOOR
+type AppCommand = MOVE | STOP | NOOP | OPEN_DOOR | CLOSE_DOOR
 
 type Direction = UP | DOWN
 
 type Action = {
-    type: Event | Command
+    type: AppEvent | AppCommand
     payload?: any
 }
 
 interface EventAction extends Action {
-    type: Event
+    type: AppEvent
 }
 
 interface CommandAction extends Action {
-    type: Command
+    type: AppCommand
 }
 
 type ElevatorState = {
@@ -29,6 +33,5 @@ type ElevatorState = {
 
 type MovementState = {
     direction: Direction | null
-    isReadyToMove: boolean
     nextCommand: CommandAction
 }

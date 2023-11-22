@@ -3,7 +3,7 @@ import { Dispatch, useReducer } from 'react'
 export function elevatorReducer(
     startFloor: number,
     totalFloors: number
-): { state: ElevatorState; dispatch: Dispatch<Action> } {
+): { state: ElevatorState; dispatch: Dispatch<EventAction> } {
     const initialState: ElevatorState = {
         currentFloor: startFloor,
         callsGoingUp: new Array(totalFloors + 1).fill(false),
@@ -13,7 +13,10 @@ export function elevatorReducer(
         nextCommand: { type: 'NOOP' },
     }
 
-    const reducer = (state: ElevatorState, action: Action): ElevatorState => {
+    const reducer = (
+        state: ElevatorState,
+        action: EventAction
+    ): ElevatorState => {
         switch (action.type) {
             case 'ELEVATOR_CALLED':
                 return handleElevatorCalled(state, action.payload)
@@ -21,8 +24,8 @@ export function elevatorReducer(
                 return handleFloorSelected(state, action.payload)
             case 'ELEVATOR_ARRIVED_ON':
                 return handleElevatorArrivedOn(state, action.payload)
-            case 'READY_TO_MOVE':
-                return handleReadyToMove(state)
+            case 'DOOR_CLOSED':
+                return handleDoorClosed(state)
             default:
                 return state
         }
@@ -123,7 +126,7 @@ export function elevatorReducer(
         return newState
     }
 
-    function handleReadyToMove(state: ElevatorState): ElevatorState {
+    function handleDoorClosed(state: ElevatorState): ElevatorState {
         const newState = { ...state }
 
         if (!newState.runningDirection) {

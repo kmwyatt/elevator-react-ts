@@ -6,18 +6,18 @@ export function movementReducer(): {
 } {
     const initialState = {
         direction: null,
-        isReadyToMove: true,
         nextCommand: { type: 'NOOP' },
     }
 
-    const reducer = (state: MovementState, action: Action): MovementState => {
+    const reducer = (
+        state: MovementState,
+        action: CommandAction
+    ): MovementState => {
         switch (action.type) {
             case 'MOVE':
                 return handleMove(state, action.payload)
             case 'STOP':
                 return handleStop(state)
-            case 'READY_TO_MOVE':
-                return handleReadyToMove(state)
             default:
                 return state
         }
@@ -46,23 +46,13 @@ export function movementReducer(): {
         const newState = { ...state }
 
         newState.direction = null
-        newState.isReadyToMove = false
         newState.nextCommand = { type: 'OPEN_DOOR' }
 
         return newState
     }
 
-    function handleReadyToMove(state: MovementState): MovementState {
-        const newState = { ...state }
-
-        newState.isReadyToMove = true
-        newState.nextCommand = { type: 'NOOP' }
-
-        return newState
-    }
-
     function isMoving(state: MovementState): boolean {
-        return state.direction !== null && state.isReadyToMove
+        return state.direction !== null
     }
 
     return { state, dispatch }

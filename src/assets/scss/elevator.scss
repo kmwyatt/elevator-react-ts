@@ -1,0 +1,117 @@
+.elevator-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.lane-container {
+  position: relative;
+
+  .floor-button-box-group {
+    position: absolute;
+    left: 50px;
+
+    .floor-button-box {
+      right: 140px;
+      width: 30px;
+      height: 50px;
+      margin-bottom: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #999;
+
+      .floor-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 15px;
+        height: 15px;
+        border-radius: 15px;
+        margin: 2px;
+        font-size: 10px;
+        background: #ccc;
+        color: #666;
+        border: 2px solid #666;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .lane-line {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    background: #666;
+
+    .lane-space {
+      position: relative;
+      width: 30px;
+      height: 60px;
+      background: #ccc;
+
+      .car-button-box {
+        position: absolute;
+        top: 0;
+        right: 50px;
+        width: 150px;
+        height: 100px;
+        background: #999;
+        box-sizing: border-box;
+        padding: 5px;
+
+        .floor-button-box {
+          display: flex;
+          flex-flow: wrap;
+        }
+
+        .car-button {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 20px;
+          height: 20px;
+          border-radius: 15px;
+          margin: 2px;
+          font-size: 12px;
+          font-weight: 700;
+          background: #ccc;
+          color: #666;
+          border: 2px solid #666;
+          cursor: pointer;
+        }
+      }
+
+      .car-container {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 30px;
+        height: 60px;
+        background: #333;
+
+        .car-door-container {
+          position: relative;
+          display: flex;
+          width: 26px;
+          height: 50px;
+          background: #fff;
+          overflow: hidden;
+
+          .car-door {
+            position: absolute;
+            box-sizing: border-box;
+            width: 13px;
+            height: 50px;
+            background: #990;
+            border: 3px solid #660;
+          }
+        }
+      }
+    }
+  }
+}

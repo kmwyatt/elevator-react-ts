@@ -1,0 +1,15 @@
+.floor-container {
+  position: relative;
+  display: flex;
+  flex-direction: row-reverse;
+  box-sizing: border-box;
+  width: 400px;
+  height: 60px;
+  border-bottom: 10px solid #333;
+  background: #eee;
+
+  .floor-number {
+    font-size: 20px;
+    font-weight: 700;
+  }
+}

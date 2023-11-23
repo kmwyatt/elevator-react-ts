@@ -1,15 +1,17 @@
 import { act, renderHook, RenderHookResult } from '@testing-library/react'
 import { Dispatch } from 'react'
-import { doorReducer } from './doorReducer'
+import { useDoorReducer } from './useDoorReducer'
 
-type DoorReducerTest = RenderHookResult<
+type UseDoorReducerTest = RenderHookResult<
     { state: DoorState; dispatch: Dispatch<Action> },
     unknown
 >
 
 describe('DOOR', () => {
     test('when door receive open command, it opens', () => {
-        const { result }: DoorReducerTest = renderHook(() => doorReducer())
+        const { result }: UseDoorReducerTest = renderHook(() =>
+            useDoorReducer()
+        )
 
         act(() => {
             result.current.dispatch({ type: 'DOOR_CLOSED' })
@@ -20,7 +22,9 @@ describe('DOOR', () => {
     })
 
     test('when door receive close command, it closes', () => {
-        const { result }: DoorReducerTest = renderHook(() => doorReducer())
+        const { result }: UseDoorReducerTest = renderHook(() =>
+            useDoorReducer()
+        )
 
         act(() => {
             result.current.dispatch({ type: 'DOOR_OPENED' })

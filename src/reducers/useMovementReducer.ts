@@ -1,6 +1,6 @@
 import { Dispatch, useReducer } from 'react'
 
-export function movementReducer(): {
+export function useMovementReducer(): {
     state: MovementState
     dispatch: Dispatch<Action>
 } {

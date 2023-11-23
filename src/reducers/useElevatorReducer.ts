@@ -1,6 +1,6 @@
 import { Dispatch, useReducer } from 'react'
 
-export function elevatorReducer(
+export function useElevatorReducer(
     startFloor: number,
     totalFloors: number
 ): { state: ElevatorState; dispatch: Dispatch<EventAction> } {
@@ -158,14 +158,14 @@ export function elevatorReducer(
 
     function getCallDestination(state: ElevatorState): number | null {
         if (state.runningDirection === 'UP') {
-            for (let i = totalFloors; i < 0; i--) {
-                if (state.callsGoingUp[i]) {
+            for (let i = state.currentFloor; i <= totalFloors; i++) {
+                if (state.callsGoingDown[i]) {
                     return i
                 }
             }
         } else if (state.runningDirection === 'DOWN') {
-            for (let i = 1; i <= totalFloors; i++) {
-                if (state.callsGoingDown[i]) {
+            for (let i = totalFloors; i >= state.currentFloor; i--) {
+                if (state.callsGoingUp[i]) {
                     return i
                 }
             }
@@ -176,13 +176,13 @@ export function elevatorReducer(
 
     function getSelectedDestination(state: ElevatorState): number | null {
         if (state.runningDirection === 'UP') {
-            for (let i = state.currentFloor; i < totalFloors; i++) {
+            for (let i = state.currentFloor; i <= totalFloors; i++) {
                 if (state.selectedFloors[i]) {
                     return i
                 }
             }
         } else if (state.runningDirection === 'DOWN') {
-            for (let i = totalFloors - 1; i <= state.currentFloor; i++) {
+            for (let i = state.currentFloor; i >= 0; i--) {
                 if (state.selectedFloors[i]) {
                     return i
                 }
@@ -205,8 +205,7 @@ export function elevatorReducer(
     function controlDirection(state: ElevatorState): void {
         if (
             state.callsGoingUp.filter((v) => v).length === 0 &&
-            state.callsGoingDown.filter((v) => v).length === 0 &&
-            !getSelectedDestination(state)
+            state.callsGoingDown.filter((v) => v).length === 0
         ) {
             state.runningDirection = null
             state.selectedFloors.fill(false)

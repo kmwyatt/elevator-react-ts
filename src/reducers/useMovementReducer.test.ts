@@ -1,16 +1,16 @@
 import { act, renderHook, RenderHookResult } from '@testing-library/react'
 import { Dispatch } from 'react'
-import { movementReducer } from './movementReducer'
+import { useMovementReducer } from './useMovementReducer'
 
-type MovementReducerTest = RenderHookResult<
+type UseMovementReducerTest = RenderHookResult<
     { state: MovementState; dispatch: Dispatch<Action> },
     unknown
 >
 
 describe('Movement', () => {
     test('when elevator gives move up command, car will move up', () => {
-        const { result }: MovementReducerTest = renderHook(() =>
-            movementReducer()
+        const { result }: UseMovementReducerTest = renderHook(() =>
+            useMovementReducer()
         )
 
         act(() => {
@@ -24,8 +24,8 @@ describe('Movement', () => {
     })
 
     test('when elevator gives move down command, car will move down', () => {
-        const { result }: MovementReducerTest = renderHook(() =>
-            movementReducer()
+        const { result }: UseMovementReducerTest = renderHook(() =>
+            useMovementReducer()
         )
 
         act(() => {
@@ -39,8 +39,8 @@ describe('Movement', () => {
     })
 
     test('when elevator gives stop command, car will stop', () => {
-        const { result }: MovementReducerTest = renderHook(() =>
-            movementReducer()
+        const { result }: UseMovementReducerTest = renderHook(() =>
+            useMovementReducer()
         )
 
         act(() => {

@@ -1,16 +1,16 @@
-import { elevatorReducer } from './elevatorReducer'
+import { useElevatorReducer } from './useElevatorReducer'
 import { act, renderHook, RenderHookResult } from '@testing-library/react'
 import { Dispatch } from 'react'
 
-type ElevatorReducerTest = RenderHookResult<
+type UseElevatorReducerTest = RenderHookResult<
     { state: ElevatorState; dispatch: Dispatch<Action> },
     unknown
 >
 
 describe('Elevator', () => {
     test('elevator moves up when called to go down from 3rd floor while waiting on 1st floor', async () => {
-        const { result }: ElevatorReducerTest = renderHook(() =>
-            elevatorReducer(1, 5)
+        const { result }: UseElevatorReducerTest = renderHook(() =>
+            useElevatorReducer(1, 5)
         )
 
         act(() => {
@@ -25,8 +25,8 @@ describe('Elevator', () => {
     })
 
     test('elevator moves down when called to go up from 1st floor while waiting on 4th floor', () => {
-        const { result }: ElevatorReducerTest = renderHook(() =>
-            elevatorReducer(4, 5)
+        const { result }: UseElevatorReducerTest = renderHook(() =>
+            useElevatorReducer(4, 5)
         )
 
         act(() => {
@@ -43,8 +43,8 @@ describe('Elevator', () => {
     })
 
     test('elevator moves down when 2nd floor selected to go to while waiting on 5th floor', () => {
-        const { result }: ElevatorReducerTest = renderHook(() =>
-            elevatorReducer(5, 5)
+        const { result }: UseElevatorReducerTest = renderHook(() =>
+            useElevatorReducer(5, 5)
         )
 
         act(() => {
@@ -61,8 +61,8 @@ describe('Elevator', () => {
     })
 
     test('elevator opens door when called to go up from 1st floor while waiting on same floor', async () => {
-        const { result }: ElevatorReducerTest = renderHook(() =>
-            elevatorReducer(1, 5)
+        const { result }: UseElevatorReducerTest = renderHook(() =>
+            useElevatorReducer(1, 5)
         )
 
         act(() => {
@@ -76,8 +76,8 @@ describe('Elevator', () => {
     })
 
     test('elevator do nothing when 1st floor selected while waiting on same floor', async () => {
-        const { result }: ElevatorReducerTest = renderHook(() =>
-            elevatorReducer(1, 5)
+        const { result }: UseElevatorReducerTest = renderHook(() =>
+            useElevatorReducer(1, 5)
         )
 
         act(() => {
@@ -91,8 +91,8 @@ describe('Elevator', () => {
     })
 
     test('elevator stops when it arrived on 2nd floor & 5th floor while going up', () => {
-        const { result }: ElevatorReducerTest = renderHook(() =>
-            elevatorReducer(1, 5)
+        const { result }: UseElevatorReducerTest = renderHook(() =>
+            useElevatorReducer(1, 5)
         )
         act(() => {
             result.current.dispatch({

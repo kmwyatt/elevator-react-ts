@@ -1,4 +1,4 @@
-import { useFloorInfo } from './hooks/useFloorInfo'
+import useFloorInfo from './hooks/useFloorInfo'
 import Floor from './components/Floor'
 import Elevator from './components/Elevator'
 

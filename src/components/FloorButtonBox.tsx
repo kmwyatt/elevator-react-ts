@@ -1,4 +1,4 @@
-import { useFloorInfo } from '../hooks/useFloorInfo'
+import useFloorInfo from '../hooks/useFloorInfo'
 
 export default function FloorButtonBox({ floorNum }: { floorNum: number }) {
     const floorInfo = useFloorInfo()

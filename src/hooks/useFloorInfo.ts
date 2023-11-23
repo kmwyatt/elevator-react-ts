@@ -1,6 +1,6 @@
 import { FLOOR_HEIGHT, TOTAL_FLOORS } from '../constants/config'
 
-export function useFloorInfo() {
+export default function useFloorInfo() {
     const totalFloors = TOTAL_FLOORS
     const floorHeight = FLOOR_HEIGHT
     const floorNums = new Array(totalFloors)

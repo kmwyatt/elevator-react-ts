@@ -1,6 +1,7 @@
-import { useElevatorReducer } from './useElevatorReducer'
-import { act, renderHook, RenderHookResult } from '@testing-library/react'
 import { Dispatch } from 'react'
+import { act, renderHook, RenderHookResult } from '@testing-library/react'
+
+import useElevatorReducer from './useElevatorReducer'
 
 type UseElevatorReducerTest = RenderHookResult<
     { state: ElevatorState; dispatch: Dispatch<Action> },

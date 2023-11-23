@@ -1,6 +1,6 @@
 import { Dispatch, useReducer } from 'react'
 
-export function useDoorReducer(): {
+export default function useDoorReducer(): {
     state: DoorState
     dispatch: Dispatch<Action>
 } {

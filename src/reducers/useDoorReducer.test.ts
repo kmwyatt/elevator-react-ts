@@ -1,6 +1,7 @@
-import { act, renderHook, RenderHookResult } from '@testing-library/react'
 import { Dispatch } from 'react'
-import { useDoorReducer } from './useDoorReducer'
+import { act, renderHook, RenderHookResult } from '@testing-library/react'
+
+import useDoorReducer from './useDoorReducer'
 
 type UseDoorReducerTest = RenderHookResult<
     { state: DoorState; dispatch: Dispatch<Action> },

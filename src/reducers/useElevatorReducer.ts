@@ -1,6 +1,6 @@
 import { Dispatch, useReducer } from 'react'
 
-export function useElevatorReducer(
+export default function useElevatorReducer(
     startFloor: number,
     totalFloors: number
 ): { state: ElevatorState; dispatch: Dispatch<EventAction> } {

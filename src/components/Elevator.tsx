@@ -1,6 +1,6 @@
 import FloorButtonBox from './FloorButtonBox'
 import Car from './Car'
-import { useFloorInfo } from '../hooks/useFloorInfo'
+import useFloorInfo from '../hooks/useFloorInfo'
 
 import '../assets/scss/elevator.scss'
 

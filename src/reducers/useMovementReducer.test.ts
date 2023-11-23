@@ -1,6 +1,7 @@
-import { act, renderHook, RenderHookResult } from '@testing-library/react'
 import { Dispatch } from 'react'
-import { useMovementReducer } from './useMovementReducer'
+import { act, renderHook, RenderHookResult } from '@testing-library/react'
+
+import useMovementReducer from './useMovementReducer'
 
 type UseMovementReducerTest = RenderHookResult<
     { state: MovementState; dispatch: Dispatch<Action> },

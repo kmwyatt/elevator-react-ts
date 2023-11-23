@@ -1,5 +1,5 @@
 import CarDoor from './CarDoor'
-import { useFloorInfo } from '../hooks/useFloorInfo'
+import useFloorInfo from '../hooks/useFloorInfo'
 
 export default function Car() {
     const floorInfo = useFloorInfo()

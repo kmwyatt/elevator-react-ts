@@ -3,7 +3,9 @@ type AppEvent =
     | ELEVATOR_CALLED
     | FLOOR_SELECTED
     | ELEVATOR_ARRIVED_ON
+    | DOOR_OPENED
     | DOOR_CLOSED
+    | NONE
 
 type AppCommand = MOVE | STOP | NOOP | OPEN_DOOR | CLOSE_DOOR
 

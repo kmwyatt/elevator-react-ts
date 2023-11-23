@@ -9,6 +9,8 @@ type AppCommand = MOVE | STOP | NOOP | OPEN_DOOR | CLOSE_DOOR
 
 type Direction = UP | DOWN
 
+type DoorStatus = OPENED | CLOSED | OPENING | CLOSING
+
 type Action = {
     type: AppEvent | AppCommand
     payload?: any
@@ -33,5 +35,10 @@ type ElevatorState = {
 
 type MovementState = {
     direction: Direction | null
+    nextCommand: CommandAction
+}
+
+type DoorState = {
+    status: DoorStatus
     nextCommand: CommandAction
 }

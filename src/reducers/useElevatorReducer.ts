@@ -9,7 +9,9 @@ export default function useElevatorReducer(
         callsGoingUp: new Array(totalFloors + 1).fill(false),
         callsGoingDown: new Array(totalFloors + 1).fill(false),
         selectedFloors: new Array(totalFloors + 1).fill(false),
+        callDirection: null,
         runningDirection: null,
+        isReadyToMove: true,
         nextCommand: { type: 'NOOP' },
     }
 
@@ -46,6 +48,7 @@ export default function useElevatorReducer(
         const newState: ElevatorState = { ...state }
 
         if (floor === newState.currentFloor && !newState.runningDirection) {
+            newState.isReadyToMove = false
             newState.nextCommand = { type: 'OPEN_DOOR' }
 
             return newState
@@ -57,13 +60,10 @@ export default function useElevatorReducer(
             newState.callsGoingDown[floor] = true
         }
 
-        if (!newState.runningDirection) {
-            if (floor === newState.currentFloor) {
-            }
-            newState.nextCommand = {
-                type: 'MOVE',
-                payload: { direction: getDirectionToMove(newState, floor) },
-            }
+        if (!newState.callDirection) {
+            newState.callDirection = direction
+            newState.runningDirection = getDirectionToMove(newState, floor)
+            controlMovement(newState)
 
             return newState
         }
@@ -89,9 +89,10 @@ export default function useElevatorReducer(
 
         if (!newState.runningDirection) {
             newState.runningDirection = getDirectionToMove(newState, floor)
-            newState.nextCommand = {
-                type: 'MOVE',
-                payload: { direction: newState.runningDirection },
+            controlMovement(newState)
+
+            if (!newState.callDirection) {
+                newState.callDirection = newState.runningDirection
             }
 
             return newState
@@ -116,6 +117,7 @@ export default function useElevatorReducer(
         ) {
             deleteCurrentFloorFromArrays(newState)
             controlDirection(newState)
+            newState.isReadyToMove = false
             newState.nextCommand = { type: 'STOP' }
 
             return newState
@@ -129,18 +131,8 @@ export default function useElevatorReducer(
     function handleDoorClosed(state: ElevatorState): ElevatorState {
         const newState = { ...state }
 
-        if (!newState.runningDirection) {
-            newState.nextCommand = {
-                type: 'NOOP',
-            }
-
-            return newState
-        }
-
-        newState.nextCommand = {
-            type: 'MOVE',
-            payload: { direction: newState.runningDirection },
-        }
+        newState.isReadyToMove = true
+        controlMovement(newState)
 
         return newState
     }
@@ -148,24 +140,26 @@ export default function useElevatorReducer(
     function getDirectionToMove(
         state: ElevatorState,
         destination: number
-    ): Direction {
+    ): Direction | null {
         if (destination > state.currentFloor) {
             return 'UP'
-        } else {
+        } else if (destination < state.currentFloor) {
             return 'DOWN'
         }
+
+        return null
     }
 
     function getCallDestination(state: ElevatorState): number | null {
-        if (state.runningDirection === 'UP') {
-            for (let i = state.currentFloor; i <= totalFloors; i++) {
-                if (state.callsGoingDown[i]) {
+        if (state.callDirection === 'UP') {
+            for (let i = 1; i <= totalFloors; i++) {
+                if (state.callsGoingUp[i]) {
                     return i
                 }
             }
-        } else if (state.runningDirection === 'DOWN') {
-            for (let i = totalFloors; i >= state.currentFloor; i--) {
-                if (state.callsGoingUp[i]) {
+        } else if (state.callDirection === 'DOWN') {
+            for (let i = totalFloors; i >= 1; i--) {
+                if (state.callsGoingDown[i]) {
                     return i
                 }
             }
@@ -175,16 +169,32 @@ export default function useElevatorReducer(
     }
 
     function getSelectedDestination(state: ElevatorState): number | null {
-        if (state.runningDirection === 'UP') {
-            for (let i = state.currentFloor; i <= totalFloors; i++) {
-                if (state.selectedFloors[i]) {
-                    return i
+        if (state.runningDirection === state.callDirection) {
+            if (state.callDirection === 'UP') {
+                for (let i = state.currentFloor; i <= totalFloors; i++) {
+                    if (state.selectedFloors[i] || state.callsGoingUp[i]) {
+                        return i
+                    }
+                }
+            } else if (state.callDirection === 'DOWN') {
+                for (let i = state.currentFloor; i >= 1; i--) {
+                    if (state.selectedFloors[i] || state.callsGoingDown[i]) {
+                        return i
+                    }
                 }
             }
-        } else if (state.runningDirection === 'DOWN') {
-            for (let i = state.currentFloor; i >= 0; i--) {
-                if (state.selectedFloors[i]) {
-                    return i
+        } else {
+            if (state.callDirection === 'UP') {
+                for (let i = state.currentFloor; i <= totalFloors; i++) {
+                    if (state.selectedFloors[i]) {
+                        return i
+                    }
+                }
+            } else if (state.callDirection === 'DOWN') {
+                for (let i = state.currentFloor; i >= 1; i--) {
+                    if (state.selectedFloors[i]) {
+                        return i
+                    }
                 }
             }
         }
@@ -193,36 +203,79 @@ export default function useElevatorReducer(
     }
 
     function deleteCurrentFloorFromArrays(state: ElevatorState): void {
-        if (state.runningDirection === 'UP') {
-            state.callsGoingUp[state.currentFloor] = false
-        } else if (state.runningDirection === 'DOWN') {
-            state.callsGoingDown[state.currentFloor] = false
-        }
+        state.selectedFloors = state.selectedFloors.map((v, i) =>
+            i === state.currentFloor ? false : v
+        )
 
-        state.callsGoingUp[state.currentFloor] = false
+        if (state.callDirection === 'UP') {
+            state.callsGoingUp = state.callsGoingUp.map((v, i) =>
+                i === state.currentFloor ? false : v
+            )
+        } else if (state.callDirection === 'DOWN') {
+            state.callsGoingDown = state.callsGoingDown.map((v, i) =>
+                i === state.currentFloor ? false : v
+            )
+        }
     }
 
     function controlDirection(state: ElevatorState): void {
         if (
             state.callsGoingUp.filter((v) => v).length === 0 &&
-            state.callsGoingDown.filter((v) => v).length === 0
+            state.callsGoingDown.filter((v) => v).length === 0 &&
+            state.selectedFloors.filter((v) => v).length === 0
         ) {
+            state.callDirection = null
             state.runningDirection = null
-            state.selectedFloors.fill(false)
+
             return
         }
 
-        if (getCallDestination(state) !== null) {
+        const selectedDestination = getSelectedDestination(state)
+        if (selectedDestination !== null) {
+            state.runningDirection = getDirectionToMove(
+                state,
+                selectedDestination
+            )
             return
         }
 
-        if (state.runningDirection === 'UP') {
-            state.runningDirection = 'DOWN'
-        } else if (state.runningDirection === 'DOWN') {
-            state.runningDirection = 'UP'
+        const callDestination = getCallDestination(state)
+        if (callDestination !== null) {
+            state.runningDirection = getDirectionToMove(state, callDestination)
+            return
         }
 
         state.selectedFloors.fill(false)
+
+        if (state.callDirection === 'UP') {
+            state.callDirection = 'DOWN'
+            state.callsGoingDown[state.currentFloor] = false
+        } else if (state.callDirection === 'DOWN') {
+            state.callDirection = 'UP'
+            state.callsGoingUp[state.currentFloor] = false
+        }
+
+        const newDestination = getCallDestination(state)
+
+        if (!newDestination) {
+            state.callDirection = null
+            state.runningDirection = null
+            return
+        }
+
+        state.runningDirection = getDirectionToMove(state, newDestination)
+    }
+
+    function controlMovement(state: ElevatorState): void {
+        if (state.isReadyToMove && state.runningDirection) {
+            state.nextCommand = {
+                type: 'MOVE',
+                payload: { direction: state.runningDirection },
+            }
+            return
+        }
+
+        state.nextCommand = { type: 'NOOP' }
     }
 
     return { state, dispatch }

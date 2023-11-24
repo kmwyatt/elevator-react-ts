@@ -95,6 +95,8 @@ describe('Elevator', () => {
         const { result }: UseElevatorReducerTest = renderHook(() =>
             useElevatorReducer(1, 5)
         )
+
+        // user requests
         act(() => {
             result.current.dispatch({
                 type: 'ELEVATOR_CALLED',
@@ -138,6 +140,96 @@ describe('Elevator', () => {
             result.current.dispatch({
                 type: 'ELEVATOR_ARRIVED_ON',
                 payload: { floor: 5 },
+            })
+        })
+        expect(result.current.state.nextCommand.type).toEqual('STOP')
+    })
+
+    test('elevator moves and stops in order [4, 2, 1, 3]', () => {
+        const { result }: UseElevatorReducerTest = renderHook(() =>
+            useElevatorReducer(1, 5)
+        )
+
+        // user requests
+        act(() => {
+            result.current.dispatch({
+                type: 'ELEVATOR_CALLED',
+                payload: { direction: 'DOWN', floor: 4 },
+            })
+            result.current.dispatch({
+                type: 'ELEVATOR_CALLED',
+                payload: { direction: 'DOWN', floor: 2 },
+            })
+            result.current.dispatch({
+                type: 'ELEVATOR_CALLED',
+                payload: { direction: 'UP', floor: 3 },
+            })
+            result.current.dispatch({
+                type: 'FLOOR_SELECTED',
+                payload: { floor: 1 },
+            })
+        })
+
+        act(() => {
+            result.current.dispatch({
+                type: 'ELEVATOR_ARRIVED_ON',
+                payload: { floor: 2 },
+            })
+        })
+        expect(result.current.state.nextCommand.type).toEqual('NOOP')
+
+        act(() => {
+            result.current.dispatch({
+                type: 'ELEVATOR_ARRIVED_ON',
+                payload: { floor: 3 },
+            })
+        })
+        expect(result.current.state.nextCommand.type).toEqual('NOOP')
+
+        act(() => {
+            result.current.dispatch({
+                type: 'ELEVATOR_ARRIVED_ON',
+                payload: { floor: 4 },
+            })
+        })
+        expect(result.current.state.nextCommand.type).toEqual('STOP')
+
+        act(() => {
+            result.current.dispatch({
+                type: 'ELEVATOR_ARRIVED_ON',
+                payload: { floor: 3 },
+            })
+        })
+        expect(result.current.state.nextCommand.type).toEqual('NOOP')
+
+        act(() => {
+            result.current.dispatch({
+                type: 'ELEVATOR_ARRIVED_ON',
+                payload: { floor: 2 },
+            })
+        })
+        expect(result.current.state.nextCommand.type).toEqual('STOP')
+
+        act(() => {
+            result.current.dispatch({
+                type: 'ELEVATOR_ARRIVED_ON',
+                payload: { floor: 1 },
+            })
+        })
+        expect(result.current.state.nextCommand.type).toEqual('STOP')
+
+        act(() => {
+            result.current.dispatch({
+                type: 'ELEVATOR_ARRIVED_ON',
+                payload: { floor: 2 },
+            })
+        })
+        expect(result.current.state.nextCommand.type).toEqual('NOOP')
+
+        act(() => {
+            result.current.dispatch({
+                type: 'ELEVATOR_ARRIVED_ON',
+                payload: { floor: 3 },
             })
         })
         expect(result.current.state.nextCommand.type).toEqual('STOP')

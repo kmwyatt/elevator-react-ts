@@ -31,7 +31,9 @@ type ElevatorState = {
     callsGoingUp: boolean[]
     callsGoingDown: boolean[]
     selectedFloors: boolean[]
+    callDirection: Direction | null
     runningDirection: Direction | null
+    isReadyToMove: boolean
     nextCommand: CommandAction
 }
 

@@ -17,7 +17,7 @@ export function useMovement() {
         }
 
         dispatchCommandAction(state.nextCommand)
-    }, [state])
+    }, [state.nextCommand])
 
     useEffect(() => {
         dispatch(commandAction)

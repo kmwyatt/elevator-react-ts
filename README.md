@@ -93,7 +93,7 @@ export const DOOR_WIDTH = 13
 
 엘리베이터의 핵심 로직 (비즈니스 로직)을 구현한 코드이다.
 
-- useElevatorReducer.ts
+- [useElevatorReducer.ts](https://github.com/kmwyatt/elevator-react-typescript/blob/main/docs/useElevatorReducer.md)
 
 - useMovementReducer.ts
 

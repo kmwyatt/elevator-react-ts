@@ -89,15 +89,144 @@ export const DOOR_WIDTH = 13
 - DOOR_WIDTH: 문 한 쪽의 너비는 13이다
 
 
+### 타입 정의
+
+/src/react-app-env.d.ts
+
+#### AppEvent와 AppCommand
+
+```typescript
+type AppEvent =
+    | ELEVATOR_CALLED
+    | FLOOR_SELECTED
+    | ELEVATOR_ARRIVED_ON
+    | DOOR_OPENED
+    | DOOR_CLOSED
+    | NONE
+
+type AppCommand = MOVE | STOP | NOOP | OPEN_DOOR | CLOSE_DOOR
+```
+
+이벤트와 커맨드의 타입을 정의했다.
+
+Event라는 타입이 이미 존재해서 구분을 못 하는 문제가 있었다. 그래서 AppEvent, AppCommand로 이름을 지었다.
+
+##### AppEvent
+
+- ELEVATOR_CALLED: 사용자가 각 층에 있는 버튼으로 엘리베이터를 호출할 때 발생하는 이벤트이다. payload로는 호출 방향의 값인 direction과 호출한 층의 값인 floor를 전달받는다.
+- FLOOR_SELECTED: 사용자가 엘리베이터 내부에 있는 버튼으로 가고자 하는 층을 선택할 때 발생하는 이벤트이다. payload로는 희망 층의 값인 floor를 전달받는다.
+- ELEVATOR_ARRIVED_ON: 엘리베이터 카가 움직이다가 해당 층에 도착할 때 발생하는 이벤트이다. payload로는 도착한 층의 값인 floor를 전달받는다.
+- DOOR_OPENED: 문이 열렸을 때 발생하는 이벤트이다. payload는 없다.
+- DOOR_CLOSED: 문이 닫혔을 때 발생하는 이벤트이다. payload는 없다.
+- NONE: 이벤트가 없다는 뜻이다. 없는 이벤트가 발생하지는 않지만, EventAction 초기화를 위해서 정의했다. payload는 없다.
+
+##### AppCommand
+
+- MOVE: 움직이라는 의미의 커맨드이다. payload로는 작동 방향의 값인 direction을 전달받는다.
+- STOP: 멈추라는 의미의 커맨드이다. payload는 없다.
+- NOOP: No Operation. 아무 일도 하지 않는다는 뜻이다. payload는 없다.
+- OPEN_DOOR: 문을 열라는 의미의 커맨드이다. payload는 없다.
+- CLOSE_DOOR: 문을 닫으라는 의미의 커맨드이다. payload는 없다.
+
+#### Direction과 DoorStatus
+
+```typescript
+type Direction = UP | DOWN
+
+type DoorStatus = OPENED | CLOSED | OPENING | CLOSING
+```
+
+방향과 도어 개폐장치 상태의 타입을 정의했다.
+
+#### Action
+
+```typescript
+type Action = {
+    type: AppEvent | AppCommand
+    payload?: any
+}
+
+interface EventAction extends Action {
+    type: AppEvent
+}
+
+interface CommandAction extends Action {
+    type: AppCommand
+}
+```
+
+액션의 타입을 정의했다.
+
+#### ElevatorState
+
+```typescript
+type ElevatorState = {
+    currentFloor: number
+    callsGoingUp: boolean[]
+    callsGoingDown: boolean[]
+    selectedFloors: boolean[]
+    callDirection: Direction | null
+    runningDirection: Direction | null
+    isReadyToMove: boolean
+    nextCommand: CommandAction
+}
+```
+
+엘리베이터 제어부의 핵심 로직 state의 타입을 정의했다.
+
+- currentFloor: 현재 층의 값이다.
+- callsGoingUp: 위로 올라가는 호출을 저장하는 배열이다.
+- callsGoingDown: 아래로 내려가는 호출을 저장하는 배열이다.
+- selectedFloors: 가고자 하는 층의 입력을 저장하는 배열이다.
+- callDirection: 현재 처리하고 있는 호출 방향의 값이다.
+- runningDirection: 엘리베이터가 작동하고 있는 방향의 값이다.
+- isReadyToMove: 움직일 준비가 되어있는지에 대한 값이다.
+- nextCommand: 다음에 발동할 커맨드 액션의 값이다.
+
+#### MovementState
+
+```typescript
+type MovementState = {
+    direction: Direction | null
+    nextCommand: CommandAction
+}
+```
+
+엘리베이터 구동장치의 핵심 로직 state의 타입을 정의했다.
+
+- direction: 이동 방향의 값이다.
+- nextCommand: 다음에 발동할 커맨드 액션의 값이다.
+
+#### DoorState
+
+```typescript
+type DoorState = {
+    status: DoorStatus
+    nextCommand: CommandAction
+}
+```
+
+엘리베이터 도어 개폐장치의 핵심 로직 state의 타입을 정의했다.
+
+- status: 도어 개폐장치의 상태 값이다.
+- nextCommand: 다음에 발동할 커맨드 액션의 값이다.
+
 ### reducers
 
-엘리베이터의 핵심 로직 (비즈니스 로직)을 구현한 코드이다.
+엘리베이터의 핵심 로직(비즈니스 로직)을 구현한 코드이다.
 
 - [useElevatorReducer.ts](https://github.com/kmwyatt/elevator-react-typescript/blob/main/docs/useElevatorReducer.md)
 
 - [useMovementReducer.ts](https://github.com/kmwyatt/elevator-react-typescript/blob/main/docs/useMovementReducer.md)
 
 - [useDoorReducer.ts](https://github.com/kmwyatt/elevator-react-typescript/blob/main/docs/useDoorReducer.md)
+
+
+### contexts
+
+이벤트와 커맨드의 통로를 구현한 코드이다.
+
+- [useActionContext.ts](https://github.com/kmwyatt/elevator-react-typescript/blob/main/docs/useActionContext.md)
 
 
 ### hooks

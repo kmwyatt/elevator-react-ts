@@ -1,9 +1,12 @@
 # useElevatorReducer.ts
 
-엘리베이터 제어부를 구현한 리듀서이다.
+엘리베이터 제어부의 핵심 로직을 구현한 코드이다.
 
 
 ### 리듀서 초기값 정의
+
+리듀서의 초기값을 정의했다.
+
 ```typescript
 const initialState: ElevatorState = {
     currentFloor: startFloor,
@@ -17,8 +20,6 @@ const initialState: ElevatorState = {
 }
 ```
 
-리듀서의 초기값을 정의했다.
-
 - currentFloor: 현재 층의 값으로, 프로퍼티로 받은 시작 층의 값인 startFloor로 초기화 했다.
 - callsGoingUp: 위로 올라가는 호출을 저장하는 배열로 모든 값을 false로 초기화 했다.
 - callsGoingDown: 아래로 내려가는 호출을 저장하는 배열로 모든 값을 false로 초기화 했다.
@@ -30,6 +31,8 @@ const initialState: ElevatorState = {
 
 
 ### 리듀서 정의
+
+이벤트 액션을 받아서 state를 업데이트 하는 리듀서의 코드를 작성했다.
 
 ```typescript
 const reducer = (
@@ -53,7 +56,6 @@ const reducer = (
 const [state, dispatch] = useReducer(reducer, initialState)
 ```
 
-이벤트 액션을 받아서 state를 업데이트 하는 리듀서의 코드를 작성했다.
 
 - ELEVATOR_CALLED: 사용자가 각 층에 있는 버튼으로 엘리베이터를 호출할 때 발생하는 이벤트이다. payload로는 호출 방향의 값인 direction과 호출한 층의 값인 floor를 전달받는다.
 - FLOOR_SELECTED: 사용자가 엘리베이터 내부에 있는 버튼으로 가고자 하는 층을 선택할 때 발생하는 이벤트이다. payload로는 희망 층의 값인 floor를 전달받는다.

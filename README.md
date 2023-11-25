@@ -95,9 +95,9 @@ export const DOOR_WIDTH = 13
 
 - [useElevatorReducer.ts](https://github.com/kmwyatt/elevator-react-typescript/blob/main/docs/useElevatorReducer.md)
 
-- useMovementReducer.ts
+- [useMovementReducer.ts](https://github.com/kmwyatt/elevator-react-typescript/blob/main/docs/useMovementReducer.md)
 
-- useDoorReducer.ts
+- [useDoorReducer.ts](https://github.com/kmwyatt/elevator-react-typescript/blob/main/docs/useDoorReducer.md)
 
 
 ### hooks

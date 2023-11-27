@@ -24,10 +24,6 @@ export function useElevator() {
         dispatch(eventAction)
     }, [eventAction])
 
-    useEffect(() => {
-        dispatch(commandAction)
-    }, [commandAction])
-
     function callGoingUp(floor: number): void {
         const action = {
             type: 'ELEVATOR_CALLED',

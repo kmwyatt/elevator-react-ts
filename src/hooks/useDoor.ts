@@ -52,7 +52,7 @@ export function useDoor() {
             } else if (state.status === 'CLOSING') {
                 setPosition(position - DOOR_SPEED)
             }
-        }, 10)
+        }, 20)
     }, [state.status, position])
 
     useEffect(() => {

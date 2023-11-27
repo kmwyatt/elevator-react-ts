@@ -39,7 +39,6 @@ export function useMovement() {
         if (position % FLOOR_HEIGHT === 0) {
             const currentFloor = position / FLOOR_HEIGHT + 1
             floorArrivedOn(currentFloor)
-            return
         }
     }, [state.direction, position])
 
@@ -51,7 +50,5 @@ export function useMovement() {
         dispatchEventAction(action)
     }
 
-    return {
-        position,
-    }
+    return { position }
 }

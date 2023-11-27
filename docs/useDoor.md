@@ -167,5 +167,5 @@ function closeDoor(): void {
 문의 위치를 렌더링하기 위한 position 값을 반환한다.
 
 ```typescript
-    return { position }
+return { position }
 ```
